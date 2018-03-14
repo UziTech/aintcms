@@ -9,7 +9,7 @@ const password = require('./js/password.js');
 
 
 // TODO: Move this to a config file
-var ignoredFolders = ['node_modules', 'dist'];
+window.ignoredFolders = ['node_modules', 'dist'];
 
 
 // Any app initialization happens here
@@ -30,5 +30,3 @@ ipcRenderer.on('app-ready', function(event, appConfig) {
     pages.setPage(welcome);
   }
 });
-
-

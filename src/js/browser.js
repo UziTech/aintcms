@@ -8,7 +8,7 @@ const editor = require('./editor.js');
 
 module.exports.hide = function() {
   $("#page-browser").hide();
-}
+};
 
 module.exports.show = function() {
   $("#page-browser").show();
@@ -29,11 +29,11 @@ module.exports.show = function() {
 
   $(".file-item").click(function(e) {
     e.stopPropagation();
-    
+
     editor.editFile($(this).prop('dataset').path);
     pages.setPage(editor);
   });
-}
+};
 
 // All pages should start out hidden
 module.exports.hide();
@@ -54,7 +54,7 @@ function renderDirectory(node) {
     if (childNode.contents.length > 0) {
       // No `data-path` attribute or `file-item` class for folders
       result += "<li>" + childNode.name + "/";
-      
+
       // Add nested list for directories
       result += renderDirectory(childNode);
       result += "</li>";
@@ -76,7 +76,7 @@ function getDirectories(dir, node) {
     if (file.startsWith(".")) {
       continue;
     }
-    if (ignoredFolders.indexOf(file) > -1) {
+    if (window.ignoredFolders.indexOf(file) > -1) {
       continue;
     }
     // Add the node
@@ -93,5 +93,3 @@ function getDirectories(dir, node) {
 function TreeNode(name, contents, fullPath, id) {
   return {"name": name, "contents": contents, "fullPath": fullPath};
 }
-
-

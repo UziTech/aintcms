@@ -1,7 +1,6 @@
 
 const async = require('async');
 const del = require('del');
-const fs = require('fs');
 const path = require('path');
 const spawn = require('child_process').spawn;
 
@@ -11,10 +10,10 @@ const browser = require('./browser.js');
 
 module.exports.hide = function() {
   $("#page-welcome").hide();
-}
+};
 module.exports.show = function() {
   $("#page-welcome").show();
-}
+};
 
 // All pages should start out hidden
 module.exports.hide();
@@ -54,7 +53,7 @@ $(document).ready(function() {
 
     var opts = {
       cwd: model.gitRepoPath()
-    }
+    };
     async.waterfall([
       function(callback) {
         // Delete the repo if it already exists
@@ -68,7 +67,7 @@ $(document).ready(function() {
             ['clone',
             model.authenticatedGitRepoURL(),
             model.gitRepoPath()]);
-        
+
         gitClone.on('close', function(code) {
           callback();
         });
@@ -76,7 +75,7 @@ $(document).ready(function() {
       function(callback) {
         // Delete the default `origin` remote to avoid storing password on disk
         var gitRemoteRM = spawn('git', ['remote', 'rm', 'origin'], opts);
-        
+
         gitRemoteRM.on('close', function(code) {
           callback();
         });
@@ -84,13 +83,13 @@ $(document).ready(function() {
       },
       function(callback) {
         // Install npm dependencies (TODO: abstract this to be configurable)
-        
+
         // Update status message
         msg = "Installing dependencies (this could also take awhile)....";
         $("#page-welcome-website-config .form-status").text(msg);
-        
+
         var npmInstall = spawn('npm', ['install'], opts);
-        
+
         npmInstall.on('close', function(code) {
           callback();
         });
@@ -102,8 +101,9 @@ $(document).ready(function() {
         return;
       }
       // Save configuration to disk if clone was successful
+      console.log(1);
       model.saveConfiguration();
-      
+console.log(2);
       // Switch to the browser page
       pages.setPage(browser);
     });
@@ -111,4 +111,3 @@ $(document).ready(function() {
   });
 
 });
-

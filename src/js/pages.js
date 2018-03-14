@@ -8,4 +8,4 @@ module.exports.setPage = function(page) {
   }
   currentPage = page;
   currentPage.show();
-}
+};

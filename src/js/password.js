@@ -5,10 +5,10 @@ const browser = require('./browser.js');
 
 module.exports.hide = function() {
   $("#page-password").hide();
-}
+};
 module.exports.show = function() {
   $("#page-password").show();
-}
+};
 
 // All pages should start out hidden
 module.exports.hide();
@@ -27,4 +27,3 @@ $(document).ready(function() {
   });
 
 });
-

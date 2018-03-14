@@ -1,12 +1,6 @@
-'use strict';
+const {app, BrowserWindow} = require('electron');
 
-const electron = require('electron');
-const ipcMain = require('electron').ipcMain;
-
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-
-var mainWindow = null;
+let mainWindow = null;
 
 app.on('window-all-closed', function() {
   if (process.platform != 'darwin') {
@@ -16,7 +10,7 @@ app.on('window-all-closed', function() {
 });
 
 app.on('ready', function() {
-  var distDir = __dirname + "/../dist";
+  const distDir = __dirname + "/../dist";
   mainWindow = new BrowserWindow({width: 1000, height: 800});
   mainWindow.loadURL('file://' + distDir + '/index.html');
   mainWindow.webContents.send('app-ready', app);
@@ -30,12 +24,10 @@ app.on('ready', function() {
   mainWindow.webContents.on('did-finish-load', function() {
     // Send an initialization event to the render process
     // Can't send the full `app` object because it gets serialized into JSON
-    var config = {
+    const config = {
         userDataPath: app.getPath('userData')
     };
     mainWindow.webContents.send('app-ready', config);
   });
 
 });
-
-

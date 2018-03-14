@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const spawnSync = require('child_process').spawnSync;
-const GitHubApi = require("github");
+const GitHubApi = require("@octokit/rest");
 
 const pages = require('./pages.js');
 const model = require('./model.js');
@@ -10,11 +10,11 @@ const browser = require('./browser.js');
 
 module.exports.hide = function() {
   $("#page-editor").hide();
-}
+};
 
 module.exports.show = function() {
   $("#page-editor").show();
-}
+};
 
 module.exports.editFile = function(fullPath) {
   // Update title
@@ -28,7 +28,7 @@ module.exports.editFile = function(fullPath) {
 
   var opts = {
     cwd: model.gitRepoPath()
-  }
+  };
 
   // Reset any existing changes (e.g., from an abrupt application quit)
   var gitReset = spawnSync('git', ['checkout', '--', '.'], opts);
@@ -36,7 +36,7 @@ module.exports.editFile = function(fullPath) {
     console.log("Could not reset repository");
     return;
   }
-  
+
   // Make sure `master` is checked out
   var gitCheckoutMaster = spawnSync('git', ['checkout', 'master'], opts);
   if (gitCheckoutMaster.status != 0) {
@@ -53,7 +53,7 @@ module.exports.editFile = function(fullPath) {
     console.log("Could not pull upstream changes");
     return;
   }
-  
+
   // Create a new branch
   var crappyHash = Math.random().toString().split(".")[1].substring(0, 6);
   var branchName = 'localcms-' + crappyHash;
@@ -74,7 +74,7 @@ module.exports.editFile = function(fullPath) {
   model.editedFilePath(fullPath);
   model.editedFileOriginalContents(contents); // For aborting
   model.editedBranch(branchName);
-}
+};
 
 // All pages should start out hidden
 module.exports.hide();
@@ -83,8 +83,8 @@ module.exports.hide();
 $(document).ready(function() {
 
   // --- Button Initialization ---
-  
-  $("#button-preview").click(function(e) {
+
+  $("#button-preview").click(function() {
     // Write the changes, build the site, open a browser
     fs.writeFileSync(model.editedFilePath(),
                      $("#editor").val(), 'utf8');
@@ -92,7 +92,7 @@ $(document).ready(function() {
     // Build the site
     var opts = {
       cwd: model.gitRepoPath()
-    }
+    };
     var gulpBuild = spawnSync('gulp', ['build'], opts);
     if (gulpBuild.status != 0) {
       console.log("Could not build the site");
@@ -112,7 +112,7 @@ $(document).ready(function() {
 
   });
 
-  $("#button-publish").click(function(e) {
+  $("#button-publish").click(function() {
     // Write the changes, build the site, open a browser
     fs.writeFileSync(model.editedFilePath(),
                      $("#editor").val(), 'utf8');
@@ -121,7 +121,7 @@ $(document).ready(function() {
     // Create a commit for the file edits
     var opts = {
       cwd: model.gitRepoPath()
-    }
+    };
 
     var destFile = model.editedFilePath();
     var relativeDestFile = destFile.replace(opts.cwd + "/", "");
@@ -152,7 +152,7 @@ $(document).ready(function() {
       console.log("Could not push the branch");
       return;
     }
-    
+
     // Create a pull request for the changes
     var github = new GitHubApi({
       version: "3.0.0",
@@ -187,19 +187,17 @@ $(document).ready(function() {
       // Go back to the browser page
       pages.setPage(browser);
     });
-    
+
   });
 
-  $("#button-abort").click(function(e) {
+  $("#button-abort").click(function() {
     // TODO: Need to abort on quit, too! Or refresh the git repo on edit start.
-    
+
     // Rewrite the original file contents
     fs.writeFileSync(model.editedFilePath(),
                      model.editedFileOriginalContents(), 'utf8');
-    
+
     // Go back to the browser page
     pages.setPage(browser);
   });
 });
-
-
