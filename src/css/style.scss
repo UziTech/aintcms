@@ -1,3 +1,5 @@
+// sass-lint:disable hex-notation
+
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +17,7 @@ button {
 }
 
 body {
-  /* TODO: Depending on a locally-installed font at the moment */
+  // TODO: Depending on a locally-installed font at the moment
   font-family: "Source Sans Pro", serif;
   font-size: 17px;
   font-weight: 200;
@@ -30,7 +32,7 @@ p {
 }
 
 ul {
-  margin: 0px 20px;
+  margin: 0 20px;
   list-style-type: none;
 }
 
@@ -47,11 +49,11 @@ h1 {
   display: inline-block;
   margin: 20px 0;
   padding: 10px 30px;
-  border-radius: 5px; 
+  border-radius: 5px;
 
   background-color: #4D8EDB;
   color: #FFF;
-  
+
   font-weight: normal;
   text-decoration: none;
   cursor: pointer;
@@ -98,8 +100,7 @@ h1 {
   padding: 10px;
 }
 
-
-/* --- Layout --- */
+// --- Layout ---
 
 .content {
   background-color: #E3E3E3;
@@ -125,7 +126,6 @@ h1 {
   font-size: 15px;
 }
 
-
 .center-column {
   width: 450px;
   margin: 0 auto;
@@ -135,8 +135,8 @@ h1 {
   margin: 40px 0;
 }
 
-.form-label,
-#welcome-ssh-key {
+#welcome-ssh-key,
+.form-label {
   color: #8D8D8D;
   font-size: 14px;
   font-style: italic;
@@ -173,7 +173,3 @@ h1 {
   font-style: italic;
   font-size: 14px;
 }
-
-
-
-
